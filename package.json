@@ -1,0 +1,18 @@
+{
+    "name": "share-sns",
+    "version": "1.0.0",
+    "description": "소셜 공유",
+    "main": "./src/Sns.js",
+    "keywords": [
+        "sns",
+        "share",
+        "js",
+        "plugin"
+    ],
+    "author": "Byeonghwa.Yeon (https://github.com/hwaly/)",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hwaly/pagination.git"
+    },
+    "license": "BSD"
+}
