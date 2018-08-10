@@ -202,6 +202,11 @@ class Sns {
         });
     }
 
+    kakaostoryshare(jsonData) {
+        this.setOgData(jsonData);
+        this.open(this.makeUrl `https://story.kakao.com/share?url=${this.ogData.url}`);
+    }
+
     copyurl(jsonData) {
         this.setOgData(jsonData);
 
