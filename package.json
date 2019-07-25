@@ -1,6 +1,6 @@
 {
     "name": "hwaly-share-sns",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "description": "소셜 공유",
     "main": "./src/Sns.js",
     "keywords": [
@@ -14,5 +14,9 @@
         "type": "git",
         "url": "https://github.com/hwaly/pagination.git"
     },
-    "license": "BSD"
+    "license": "BSD",
+    "devDependencies": {
+        "rollup": "^1.16.2",
+        "rollup-plugin-babel": "^4.3.3"
+    }
 }
