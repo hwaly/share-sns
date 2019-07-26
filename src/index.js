@@ -39,7 +39,7 @@ const ShareSNS = class {
 
         const lowerType = type.replace(/[_-]/g, '').toLowerCase();
 
-        if (Type.includes(lowerType)) {
+        if (!Type.includes(lowerType)) {
             console.log(Message.NOT_SUPPORT);
             return;
         }
@@ -83,9 +83,8 @@ const ShareSNS = class {
 
     _makeUrl() {
         const type = `_makeUrl${this._type.replace(/^[a-z]/, char => char.toUpperCase())}`;
-        const method = this[type] || this._makeUrlDefault;
 
-        this._shareUrl = method();
+        this._shareUrl = this[type] ? this[type]() : this._makeUrlDefault();
 
         return this;
     }
