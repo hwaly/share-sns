@@ -11,6 +11,7 @@ const Type = [
     'band',
     'kakao',
     'kakaostory',
+    'kakaostoryurl',
     'copyurl'
 ];
 
@@ -52,8 +53,11 @@ const ShareSNS = class {
     _setOriginalOpenGraph() {
         const ogTags = Array.from(document.querySelectorAll('[property^="og:"]'));
 
-        this._originalOpenGraph = ogTags.reduce((og, tag) =>
-            (og[tag.getAttribute('property').replace('og:', '')] = tag.getAttribute('content'), og), {});
+        this._originalOpenGraph = ogTags.reduce((og, tag) => {
+            og[tag.getAttribute('property').replace('og:', '')] = tag.getAttribute('content');
+
+            return og;
+        }, {});
     }
 
     _setOpenGraph(openGraph) {
@@ -81,8 +85,12 @@ const ShareSNS = class {
             (url += `${encodeURIComponent(value)}${strings[index + 1]}`, url), strings[0]);
     }
 
+    _getCapitalizeType() {
+        return this._type.replace(/^[a-z]/, char => char.toUpperCase());
+    }
+
     _makeUrl() {
-        const type = `_makeUrl${this._type.replace(/^[a-z]/, char => char.toUpperCase())}`;
+        const type = `_makeUrl${this._getCapitalizeType()}`;
 
         this._shareUrl = this[type] ? this[type]() : this._makeUrlDefault();
 
@@ -103,14 +111,29 @@ const ShareSNS = class {
         const og = this._openGraph;
         return this._encodeUrl `https://band.us/plugin/share?body=${og.title}&route=${og.url}`;
     }
+    _makeUrlKakaostoryurl() {
+        return this._encodeUrl `https://story.kakao.com/share?url=${this._openGraph.url}`;
+    }
     _makeUrlDefault() {
         return this._openGraph.url;
     }
 
     _open() {
-        window.open(this._shareUrl, null, 'width=600, height=400, location=0, menubar=0, resizeable=0, scrollbars=0, status=0, titlebar=0, toolbar=0');
+        const type = `_open${this._getCapitalizeType()}`;
+
+        this[type] ? this[type]() : this._openDefault();
 
         return this;
+    }
+
+    _openDefault() {
+        window.open(this._shareUrl, null, 'width=600, height=400, location=0, menubar=0, resizeable=0, scrollbars=0, status=0, titlebar=0, toolbar=0');
+    }
+    _openNaver() {
+        window.open(this._shareUrl, null, 'width=600, height=500, location=0, menubar=0, resizeable=0, scrollbars=0, status=0, titlebar=0, toolbar=0');
+    }
+    _openBand() {
+        window.open(this._shareUrl, null, 'width=600, height=650, location=0, menubar=0, resizeable=0, scrollbars=0, status=0, titlebar=0, toolbar=0');
     }
 
     _share(type, openGraph) {
@@ -189,7 +212,7 @@ const ShareSNS = class {
 
     _loadApi(type) {
         return new Promise((resolve, reject) => {
-            const isUsed = document.querySelector(`script[src*=${Api[type]}]`) || document.querySelector(`script[id=${type}-js-sdk]`);
+            const isUsed = document.querySelector(`script[src*="${Api[type]}"]`) || document.querySelector(`script[id="${type}-js-sdk"]`);
 
             if (isUsed) {
                 resolve();
@@ -212,6 +235,14 @@ const ShareSNS = class {
     }
 
     useKakao(appKey) {
+        const checkKakao = (callback) => {
+            if (window.Kakao && window.Kakao.init) {
+                callback();
+            } else {
+                setTimeout(() => checkKakao(callback), 500);
+            }
+        };
+
         if (!this.useKakao.used) {
             if (!appKey) {
                 throw new Error('카카오 키 필요');
@@ -221,8 +252,12 @@ const ShareSNS = class {
 
             kakao
                 .then(() => {
-                    window.Kakao.init(appKey);
-                    this.useKakao.used = true;
+                    checkKakao(() => {
+                        if (!window.Kakao.isInitialized()) {
+                            window.Kakao.init(appKey);
+                        }
+                        this.useKakao.used = true;
+                    });
                 })
                 .catch(() => {
                     console.log(new Error('카카오 API 링크를 확인해주세요'));
