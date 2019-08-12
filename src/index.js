@@ -105,7 +105,7 @@ const ShareSNS = class {
     }
     _makeUrlNaver() {
         const og = this._openGraph;
-        return this._encodeUrl `https://share.naver.com/web/shareView.nhn?url=${og.url}&title=${og.title}`;
+        return `https://share.naver.com/web/shareView.nhn?url=${encodeURI(encodeURIComponent(og.url))}&title=${encodeURI(og.title)}`;
     }
     _makeUrlBand() {
         const og = this._openGraph;
