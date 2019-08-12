@@ -109,7 +109,7 @@ const ShareSNS = class {
     }
     _makeUrlBand() {
         const og = this._openGraph;
-        return this._encodeUrl `https://band.us/plugin/share?body=${og.title}&route=${og.url}`;
+        return this._encodeUrl `https://band.us/plugin/share?body=${og.title} ${'\n'}${og.description} ${'\n'}${og.url}&route=${og.url}`;
     }
     _makeUrlKakaostoryurl() {
         return this._encodeUrl `https://story.kakao.com/share?url=${this._openGraph.url}`;
