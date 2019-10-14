@@ -8,6 +8,7 @@ const Type = [
     'facebook',
     'twitter',
     'naver',
+    'naverblog',
     'band',
     'kakao',
     'kakaostory',
@@ -106,6 +107,9 @@ const ShareSNS = class {
     _makeUrlNaver() {
         const og = this._openGraph;
         return `https://share.naver.com/web/shareView.nhn?url=${encodeURI(encodeURIComponent(og.url))}&title=${encodeURI(og.title)}`;
+    }
+    _makeUrlNaverblog() {
+        return this._encodeUrl `https://blog.naver.com/openapi/share?url=${this._openGraph.url}`;
     }
     _makeUrlBand() {
         const og = this._openGraph;
