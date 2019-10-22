@@ -101,7 +101,7 @@ const ShareSNS = class {
     }
     _makeUrlTwitter() {
         const og = this._openGraph;
-        return this._encodeUrl `https://twitter.com/intent/tweet?text=${og.title} ${og.description}&url=${og.url}`;
+        return this._encodeUrl `https://twitter.com/intent/tweet?text=${og.title ? `${og.title} ` : ''}${og.description}&url=${og.url}`;
     }
     _makeUrlNaver() {
         const og = this._openGraph;
