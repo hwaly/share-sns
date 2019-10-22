@@ -6,7 +6,7 @@ const babel = require('rollup-plugin-babel');
 const BUNDLE = process.env.BUNDLE === 'true';
 const ESM = process.env.ESM === 'true';
 
-let fileDest = `bootstrap${ESM ? '.esm' : ''}`;
+let fileDest = `sharesns${ESM ? '.esm' : ''}`;
 
 const plugins = [
     babel({
@@ -21,10 +21,10 @@ const rollupConfig = {
         format: ESM ? 'esm' : 'umd'
     },
     plugins
-}
+};
 
 if (!ESM) {
-    rollupConfig.output.name = 'bootstrap'
+    rollupConfig.output.name = 'sharesns'
 }
 
 module.exports = rollupConfig;

@@ -1,6 +1,6 @@
 {
     "name": "hwaly-share-sns",
-    "version": "1.1.8",
+    "version": "1.2.1",
     "description": "소셜 공유",
     "main": "./src/Sns.js",
     "keywords": [
@@ -12,7 +12,7 @@
     "author": "Byeonghwa.Yeon (https://github.com/hwaly/)",
     "repository": {
         "type": "git",
-        "url": "https://github.com/hwaly/pagination.git"
+        "url": "https://github.com/hwaly/share-sns.git"
     },
     "license": "BSD",
     "devDependencies": {
