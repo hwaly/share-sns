@@ -1,7 +1,6 @@
 const Message = {
     TYPE: 'SNS 타입 확인',
     NOT_SUPPORT: 'SNS 미지원'
-
 };
 
 const Type = [
@@ -184,6 +183,8 @@ const ShareSNS = class {
     }
 
     _copyurl() {
+        let isCopy = false;
+
         if (window.clipboardData && window.clipboardData.setData) {
             window.clipboardData.setData('Text', this._openGraph.url);
         } else if (document.queryCommandSupported && document.queryCommandSupported('copy')) {
@@ -204,15 +205,26 @@ const ShareSNS = class {
 
             try {
                 document.execCommand('copy');
+                isCopy = true;
             } catch (e) {
-                console.log(new Error('주소 복사 실패'))
+                console.log(new Error('주소 복사 실패'));
+                isCopy = false;
             } finally {
                 document.body.removeChild(textarea);
+
+                if (isCopy && this._copyurl._callback) {
+                    this._copyurl._callback();
+                }
             }
         }
 
         return this;
     };
+    copyUrlCallback(callback) {
+        if (callback && typeof callback === 'function') {
+            this._copyurl._callback = callback;
+        }
+    }
 
     _loadApi(type) {
         return new Promise((resolve, reject) => {
