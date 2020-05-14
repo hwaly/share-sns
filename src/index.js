@@ -186,7 +186,17 @@ const ShareSNS = class {
         let isCopy = false;
 
         if (window.clipboardData && window.clipboardData.setData) {
-            window.clipboardData.setData('Text', this._openGraph.url);
+            try {
+                window.clipboardData.setData('Text', this._openGraph.url);
+                isCopy = true;
+            } catch (e) {
+                console.log(new Error('주소 복사 실패'));
+                isCopy = false;
+            } finally {
+                if (isCopy && this._copyurl._callback) {
+                    this._copyurl._callback();
+                }
+            }
         } else if (document.queryCommandSupported && document.queryCommandSupported('copy')) {
             const textarea = document.createElement('textarea');
 

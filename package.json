@@ -1,6 +1,6 @@
 {
     "name": "hwaly-share-sns",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "description": "소셜 공유",
     "main": "./src/Sns.js",
     "keywords": [
