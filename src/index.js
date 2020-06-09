@@ -12,7 +12,8 @@ const Type = [
     'kakao',
     'kakaostory',
     'kakaostoryurl',
-    'copyurl'
+    'copyurl',
+    'sms'
 ];
 
 const Api = {
@@ -24,6 +25,7 @@ const ShareSNS = class {
         this._openGraph = {};
         this._type = '';
         this._shareUrl = '';
+        this._isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
 
         this._setOriginalOpenGraph();
 
@@ -116,6 +118,12 @@ const ShareSNS = class {
     }
     _makeUrlKakaostoryurl() {
         return this._encodeUrl `https://story.kakao.com/share?url=${this._openGraph.url}`;
+    }
+    _makeUrlSms() {
+        const og = this._openGraph;
+        const message = `${og.title}${'\n'}${og.description}${'\n'}`.replace(/(\n|\r\n)/g, "%0a");
+        const url = og.url.replace("&", "%2526");
+        return `sms:${this._isIos ? '&' : '?'}body=${message}${url}`;
     }
     _makeUrlDefault() {
         return this._openGraph.url;
