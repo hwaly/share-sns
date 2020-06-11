@@ -121,7 +121,9 @@ const ShareSNS = class {
     }
     _makeUrlSms() {
         const og = this._openGraph;
-        const message = `${og.title}${'\n'}${og.description}${'\n'}`.replace(/(\n|\r\n)/g, "%0a");
+        const title = og.title ? `${og.title}\n` : '';
+        const description = og.description ? `${og.description}\n` : '';
+        const message = `${title}${description}`.replace(/(\n|\r\n)/g, "%0a");
         const url = og.url.replace("&", "%2526");
         return `sms:${this._isIos ? '&' : '?'}body=${message}${url}`;
     }
